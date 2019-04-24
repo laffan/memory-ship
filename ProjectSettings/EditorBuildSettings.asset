@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Demo - Staggered Line of Prefabs.unity
+    guid: 1c2ae73cbab29413fb53e3f8666ac0d3
   m_configObjects: {}

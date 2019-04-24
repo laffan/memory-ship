@@ -2,8 +2,22 @@
 
 Repo for David & Ellen's Wedding barn.
 
+### Next
+
+1. Trigger video on raycast hit (or enter frame?)
+2. Masking video edges / animating mask.
+3. (Possibly) linking rotary encoder movement of prefabs (allow for photos to
+    move @ different speed)
+
+### Ideas
+
+- Child the video prefabs to a GameObject so you can find the first one and play it...
+
 
 ### Useful Links
+
+- Targeting with Raycast
+	https://www.youtube.com/watch?time_continue=18&v=_yf5vzZ2sYE
 
 - Reading/Writing to JSON
     - https://www.raywenderlich.com/418-how-to-save-and-load-a-game-in-unity

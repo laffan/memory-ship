@@ -13,13 +13,17 @@ public class MediaManager : MonoBehaviour
     List<MediaFile> mediaFiles = new List<MediaFile>();
     public Transform imageJPGPrefab;
     public Transform videoPrefab;
-    public int mediaSpacing = 15;
-    private float currentXPos = 1;
-    private float currentYPos = 1;
+
+    public Transform mediaContainer;
+
+    private Vector3 currentPosition;
+    public Vector3 mediaSpacing = new Vector3( 20, 0 , 0);
 
 
     void Start()
     {
+        currentPosition = new Vector3( 1, 1 ,1 );
+
         LoadData();
 
         foreach(MediaFile media in mediaFiles)
@@ -89,15 +93,20 @@ public class MediaManager : MonoBehaviour
         string wwwFilePath = "file://" + media.file.FullName.ToString();
         
         // Instantiate prefab container
-        Transform video = (Transform) Instantiate(videoPrefab, new Vector3(currentXPos, currentYPos, transform.position.z), transform.rotation);
-        currentXPos = currentXPos + mediaSpacing;
+        Transform video = (Transform) Instantiate(videoPrefab, currentPosition, transform.rotation);
+        // Name the container
+        video.transform.name = media.file.Name;
+        // Put inside mediaContainer game object.
+        video.transform.parent = mediaContainer.transform;
+
+        currentPosition = currentPosition + mediaSpacing;
 
         // Locate correct GameObjects w/in the prefab
         Transform label = video.Find("Label");
         Transform surface = video.Find("Surface");
 
         // DEBUG : Update label
-        label.GetComponent<TextMesh>().text = media.file.FullName.ToString();
+        // label.GetComponent<TextMesh>().text = media.file.FullName.ToString();
 
         // Attach Video to surface and pause it
         VideoClip clip = Resources.Load<VideoClip>(wwwFilePath) as VideoClip;
@@ -114,8 +123,11 @@ public class MediaManager : MonoBehaviour
         yield return www;
 
         // Instantiate a prefab to hold image
-        Transform jpgImage = (Transform) Instantiate(imageJPGPrefab, new Vector3(currentXPos, currentYPos, transform.position.z), transform.rotation);
-        currentXPos = currentXPos + mediaSpacing;
+        Transform jpgImage = (Transform) Instantiate(imageJPGPrefab, currentPosition, transform.rotation);
+        // Put inside mediaContainer game object.
+        jpgImage.transform.parent = mediaContainer.transform;
+       
+        currentPosition = currentPosition + mediaSpacing;
 
         // Locate the gameObjects w/in the prefab
         Transform label = jpgImage.Find("Label");
@@ -129,7 +141,23 @@ public class MediaManager : MonoBehaviour
 
     }
 
+    public void PlaySingleVideo( string hitName ){
+     
+        Debug.Log( "Playing " + hitName );
 
+        foreach(Transform media in mediaContainer.transform )
+        {
+            Transform surface = media.Find("Surface");
+            if ( media.name == hitName ) 
+            {
+                surface.GetComponent<VideoPlayer>().Play();
+            }
+            else 
+            {
+                surface.GetComponent<VideoPlayer>().Pause();
+            }
 
+        }
+    }
 }
 
