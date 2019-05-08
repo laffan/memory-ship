@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using System.IO;           
 using SimpleJSON;
+using System.Linq;
 
 
 [System.Serializable]
@@ -11,6 +12,8 @@ public class MediaManager : MonoBehaviour
 {   
 
     List<MediaFile> mediaFiles = new List<MediaFile>();
+    List<string> videoList = new List<string>();
+
     public Transform imageJPGPrefab;
     public Transform videoPrefab;
 
@@ -46,8 +49,18 @@ public class MediaManager : MonoBehaviour
             {
                 string path = Path.Combine(Application.streamingAssetsPath, JSONdata["mediaList"][i]);
 
-                FileInfo mediaFile = new FileInfo(path);
-                mediaFiles.Add( new MediaFile( mediaFile ));
+                // Create new file from path
+                FileInfo newFile = new FileInfo(path);
+                
+                // Create new media file from file.
+                MediaFile newMediaFile = new MediaFile( newFile );
+
+                // Add filename to string list so you can check against it
+                // in PlayVideo() 
+                videoList.Add( newMediaFile.file.Name );
+
+                // Add to mediaFile List 
+                mediaFiles.Add( newMediaFile );
             }
 
         }
@@ -142,22 +155,33 @@ public class MediaManager : MonoBehaviour
 
     }
 
-    public void PlaySingleVideo( string hitName ){
+    public void PlayVideo( List<string> visibleVideos ){
      
-        Debug.Log( "Playing " + hitName );
 
-        foreach(Transform media in mediaContainer.transform )
+        // Play these vids
+        // var visible = videoList.Intersect(visibleVideos);
+
+        // Pause these vids
+        var invisibleVids = videoList.Except(visibleVideos);
+
+        Debug.Log( "------------------------------------------");
+        Debug.Log( "Playing " + visibleVideos.Count() + " videos");
+        Debug.Log( "Pausing " + invisibleVids.Count() + " videos");
+
+        foreach (string videoName in visibleVideos)
         {
+            Transform media = mediaContainer.transform.Find( videoName);
             Transform surface = media.Find("Surface");
-            if ( media.name == hitName ) 
-            {
+
+            if ( !surface.GetComponent<VideoPlayer>().isPlaying) {
                 surface.GetComponent<VideoPlayer>().Play();
             }
-            else 
-            {
+        }
+        foreach (string videoName in invisibleVids)
+        {
+            Transform media = mediaContainer.transform.Find( videoName);
+            Transform surface = media.Find("Surface");
                 surface.GetComponent<VideoPlayer>().Pause();
-            }
-
         }
     }
 }

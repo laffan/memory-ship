@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using System;
+using System.Linq;
 
 public class CameraController : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class CameraController : MonoBehaviour
     public float smoothSpeed = 10f;
     public Vector3 cameraOffset;
 
+    List<string> visibleVideos = new List<string>();
 
+    private MediaManager mediaManager;
     Camera cam;
 
 
@@ -26,8 +29,9 @@ public class CameraController : MonoBehaviour
         serialIndicator = serialContainer.Find("Indicator");
 
         camera.position = serialIndicator.position + cameraOffset;
-
         cam = camera.GetComponent<Camera>();
+
+        mediaManager = transform.GetComponent<MediaManager>();
 	}
 
     void Update(){
@@ -45,9 +49,7 @@ public class CameraController : MonoBehaviour
         int encoderInt = Int32.Parse(encoderVal);
         serialIndicator.transform.position =  new Vector3(encoderInt , 0 , 0);
 
-
-        Debug.Log( encoderInt );
-
+        // Debug.Log( encoderInt );
 
     }
 
@@ -66,17 +68,19 @@ public class CameraController : MonoBehaviour
         // Raycast out from camera
 
         RaycastHit hitInfo;
-        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        var newVisibleVideos = new List<string>();
 
-        // Vector3[] rays = new [] { 
-        //                             new Vector3(cam.pixelWidth/2, cam.pixelHeight/2, 0), 
-        //                             new Vector3(0, cam.pixelHeight/2, 0), 
-        //                             new Vector3( cam.pixelWidth -1, cam.pixelHeight/2, 0 ) 
-        //                         };
+        // Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+
+        Vector3[] rays = new [] { 
+                                    new Vector3(cam.pixelWidth/2, cam.pixelHeight/2, 0), 
+                                    new Vector3(0, cam.pixelHeight/2, 0), 
+                                    new Vector3( cam.pixelWidth -1, cam.pixelHeight/2, 0 ) 
+                                };
         
-        // foreach (Vector3 rayVector in rays){
+        foreach (Vector3 rayVector in rays){
             
-        //     Ray ray = cam.ScreenPointToRay(rayVector);
+            Ray ray = cam.ScreenPointToRay(rayVector);
 
             bool didRayHit = Physics.Raycast(ray, out hitInfo, 100f);
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 100);
@@ -84,10 +88,18 @@ public class CameraController : MonoBehaviour
             if (didRayHit)
             {
                 // Send transform name to MediaManager::PlaySingleVideo so only 1 video plays
-                transform.GetComponent<MediaManager>().PlaySingleVideo( hitInfo.transform.name );
+                newVisibleVideos.Add( hitInfo.transform.name );
+
             }
                 
-        // }
+        }
+        if ( !visibleVideos.SequenceEqual(newVisibleVideos) ) {
+            visibleVideos = newVisibleVideos;
+            mediaManager.PlayVideo( visibleVideos );
+        }
+
+
+
     }
 
 
