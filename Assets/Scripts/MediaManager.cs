@@ -15,15 +15,16 @@ public class MediaManager : MonoBehaviour
     public Transform videoPrefab;
 
     public Transform mediaContainer;
-
     private Vector3 currentPosition;
+    
+    public int mediaOffset;
     public Vector3 mediaSpacing = new Vector3( 20, 0 , 0);
 
 
     void Start()
     {
         currentPosition = new Vector3( 1, 1 ,1 );
-
+        mediaSpacing = new Vector3( mediaOffset, 0 , 0);
         LoadData();
 
         foreach(MediaFile media in mediaFiles)

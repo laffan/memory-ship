@@ -11,7 +11,9 @@ Repo for David & Ellen's Wedding barn.
 
 ### Ideas
 
-- Child the video prefabs to a GameObject so you can find the first one and play it...
+- Animate saturation on frozen video frames (bloom in to color somehow)
+- Shader that breaks apart the farther you are from the middle of the screen
+- 
 
 
 ### Useful Links

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2644361282971576820}
   - component: {fileID: 2644361282971576823}
   - component: {fileID: 2644361282971576822}
+  - component: {fileID: 6302570394406277988}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -128,6 +129,18 @@ VideoPlayer:
   m_Looping: 0
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
+--- !u!114 &6302570394406277988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2644361282971576816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7274462fd555d4a9583e1ed51473f87f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2644361283954705917
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2644361284323243473
 Transform:
   m_ObjectHideFlags: 0

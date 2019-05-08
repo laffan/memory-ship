@@ -12,7 +12,11 @@ public class CameraController : MonoBehaviour
     public Transform camera;
 
     public float smoothSpeed = 10f;
-    public Vector3 offset;
+    public Vector3 cameraOffset;
+
+
+    Camera cam;
+
 
     // Initialization
     void Start()
@@ -21,7 +25,16 @@ public class CameraController : MonoBehaviour
         serialController = serialContainer.Find("SerialController").GetComponent<SerialController>();
         serialIndicator = serialContainer.Find("Indicator");
 
+        camera.position = serialIndicator.position + cameraOffset;
+
+        cam = camera.GetComponent<Camera>();
 	}
+
+    void Update(){
+
+        checkVisibleMedia(  );
+
+    }
 
     // Executed each frame
     void FixedUpdate()
@@ -32,7 +45,6 @@ public class CameraController : MonoBehaviour
         int encoderInt = Int32.Parse(encoderVal);
         serialIndicator.transform.position =  new Vector3(encoderInt , 0 , 0);
 
-        checkVisibleMedia( encoderInt );
 
         Debug.Log( encoderInt );
 
@@ -41,34 +53,41 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 desiredPosition = serialIndicator.position + offset;
+        Vector3 desiredPosition = serialIndicator.position + cameraOffset;
         Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime );
         // Smoothly move camera to serialIndicator's position
         camera.transform.position = smoothedPosition;
+        
+        
     }
 
-    private void checkVisibleMedia( int encoderInt ) {
-
+    private void checkVisibleMedia(  ) {
 
         // Raycast out from camera
 
         RaycastHit hitInfo;
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
 
-        Debug.DrawRay( camera.transform.position, camera.transform.forward * 100f, Color.red, 100 );
+        // Vector3[] rays = new [] { 
+        //                             new Vector3(cam.pixelWidth/2, cam.pixelHeight/2, 0), 
+        //                             new Vector3(0, cam.pixelHeight/2, 0), 
+        //                             new Vector3( cam.pixelWidth -1, cam.pixelHeight/2, 0 ) 
+        //                         };
+        
+        // foreach (Vector3 rayVector in rays){
+            
+        //     Ray ray = cam.ScreenPointToRay(rayVector);
 
+            bool didRayHit = Physics.Raycast(ray, out hitInfo, 100f);
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.blue, 100);
 
-
-
-        bool didRayHit = Physics.Raycast(ray, out hitInfo, 100f);
-
-        if (didRayHit)
-        {
-            // Send transform name to MediaManager::PlaySingleVideo so only 1 video plays
-            transform.GetComponent<MediaManager>().PlaySingleVideo( hitInfo.transform.name );
-        }
-
-
+            if (didRayHit)
+            {
+                // Send transform name to MediaManager::PlaySingleVideo so only 1 video plays
+                transform.GetComponent<MediaManager>().PlaySingleVideo( hitInfo.transform.name );
+            }
+                
+        // }
     }
 
 
