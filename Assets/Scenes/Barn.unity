@@ -493,6 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409c9b2a63c124774a97d3bcd95be45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shuffleMode: 1
   imageJPGPrefab: {fileID: 867806336447636946, guid: f78a7d1e5d2a94d63927c9c60c7de61f,
     type: 3}
   videoPrefab: {fileID: 2644361283954705890, guid: 8e83a1a18bcb641c2bcbe7fd3fd91324,
@@ -514,6 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serialContainer: {fileID: 721227141}
   camera: {fileID: 1025023546}
+  cameraSpeed: 2
   smoothSpeed: 0.125
   cameraOffset: {x: 0, y: 1, z: -12}
 --- !u!1 &1427799649
@@ -559,7 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: /dev/cu.usbmodem14101
+  portName: /dev/cu.usbmodem14201
   baudRate: 9600
   messageListener: {fileID: 1316072875}
   reconnectionDelay: 1000
@@ -612,7 +614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2015500904
 Transform:
   m_ObjectHideFlags: 0

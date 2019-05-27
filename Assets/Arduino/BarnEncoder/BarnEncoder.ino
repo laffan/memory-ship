@@ -29,6 +29,8 @@ int r;
 int g;
 int b;
 
+int changeSpeed = 1;
+
 
 void setup() {
   
@@ -65,7 +67,7 @@ void updateColor(  ) {
 
 //  Serial.println(" "); // For readability. 
 
-  if ( brightness == maxBrightness ) {
+  if ( brightness >= maxBrightness ) {
     brightness = 1;
     
     if ( cycle < 6 ) {
@@ -79,22 +81,22 @@ void updateColor(  ) {
   }
 
   if ( cycle == 1) {
-    b++;
+    b = b + changeSpeed;
   }
   else if ( cycle == 2) { /* rb --> b */
-    r--;
+    r = r - changeSpeed;
   }
   else if ( cycle == 3) { /* b --> bg */
-    g++;
+    g = g + changeSpeed;
   }
   else if ( cycle == 4) { /* bg --> g */
-    b--;
+    b = b - changeSpeed;
   }
   else if ( cycle == 5) { /* g --> rg */
-    r++;
+    r = r + changeSpeed;
   }
   else if ( cycle == 6) { /* g --> rg */
-    g--;
+    g = g - changeSpeed;
   }
   else {
     Serial.print("==================== ");

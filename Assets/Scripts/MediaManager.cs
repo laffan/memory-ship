@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
@@ -13,30 +14,43 @@ public class MediaManager : MonoBehaviour
 
   List<MediaFile> mediaFiles = new List<MediaFile>();
   List<string> videoList = new List<string>();
+  List<int> videoOrder = new List<int>();
   
-  public bool isRandomized = true;
+  public bool shuffleMode = true;
 
   public Transform imageJPGPrefab;
   public Transform videoPrefab;
 
   public Transform mediaContainer;
-  private Vector3 currentPosition;
+  private Vector3 currentPosition = new Vector3(1, 1, 1);
   
   public int mediaOffset;
   public Vector3 mediaSpacing = new Vector3( 20, 0 , 0);
 
 
-
-
   void Start()
   {
-    currentPosition = new Vector3( 1, 1 ,1 );
+    // Spacing between each prefab
     mediaSpacing = new Vector3( mediaOffset, 0 , 0);
+    // Load media in to mediaFiles
     LoadData();
+    // Create a list of ints that can be shuffled to determine video order.
+    videoOrder = Enumerable.Range(0, mediaFiles.Count - 1 ).ToList();
+    KickOff();
+  }
 
-    foreach(MediaFile media in mediaFiles)
+
+  private void KickOff( )
+  {
+   if ( shuffleMode ) 
     {
-      StartCoroutine( "SortFileTypes", media );
+      videoOrder.Shuffle();
+    }
+
+    for (int i = 0; i < videoOrder.Count; i++)
+    {
+      // Debug.Log( i + " - " + videoOrder[i] + " - " +  mediaFiles[videoOrder[i]].file.Name );
+      StartCoroutine( "LoadVideo", mediaFiles[videoOrder[i]] );
     }
   }
 
@@ -70,47 +84,17 @@ public class MediaManager : MonoBehaviour
     Debug.Log("Data Loaded");
   }
  
-  IEnumerator SortFileTypes( MediaFile media )
-  {
-    // Look inside object
-    var output = JsonUtility.ToJson(media, true);
-    Debug.Log(output);
-      
-    if ( media.fileType == ".meta" || media.fileType == ".DS_Store" )
-    {
-      yield break;
-    }
-    else {
-      switch (media.fileType)
-      {
-        case ".jpg":
-          StartCoroutine( "LoadImageJPG", media );
-          break;
-        case ".mp4":
-          StartCoroutine("LoadVideo", media);
-          break;
-        default:
-          print("Yo! Unknown extension:" + media.fileType );
-          break;
-      }
-    }
-
-  }
-  
   void LoadVideo(MediaFile media)
   {
     // Load to WWW
     string wwwFilePath = "file://" + media.file.FullName.ToString();
-    
     // Instantiate prefab container
     Transform video = (Transform) Instantiate(videoPrefab, currentPosition, transform.rotation);
     // Name the container
     video.transform.name = media.file.Name;
     // Put inside mediaContainer game object.
     video.transform.parent = mediaContainer.transform;
-
     currentPosition = currentPosition + mediaSpacing;
-
     // Locate correct GameObjects w/in the prefab
     Transform label = video.Find("Label");
     Transform surface = video.Find("Surface");
@@ -124,45 +108,13 @@ public class MediaManager : MonoBehaviour
     surface.GetComponent<VideoPlayer>().Pause();
   }
 
-  IEnumerator LoadImageJPG( MediaFile media )
-  {
-
-    // Load to WWW
-    string wwwFilePath = "file://" + media.file.FullName.ToString();
-    WWW www = new WWW(wwwFilePath);
-    yield return www;
-
-    // Instantiate a prefab to hold image
-    Transform jpgImage = (Transform) Instantiate(imageJPGPrefab, currentPosition, transform.rotation);
-    // Put inside mediaContainer game object.
-    jpgImage.transform.parent = mediaContainer.transform;
-     
-    currentPosition = currentPosition + mediaSpacing;
-
-    // Locate the gameObjects w/in the prefab
-    Transform label = jpgImage.Find("Label");
-    Transform surface = jpgImage.Find("Surface");
-
-    // Debug : Update label
-    label.GetComponent<TextMesh>().text = media.file.FullName.ToString();
-
-    // Apply image to texture
-    surface.GetComponent<SpriteRenderer>().sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0.5f, 0.5f));
-
-  }
-
   public void PlayVideo( List<string> visibleVideos ){
-   
-
-    // Play these vids
-    // var visible = videoList.Intersect(visibleVideos);
 
     // Pause these vids
     var invisibleVids = videoList.Except(visibleVideos);
-
-    Debug.Log( "------------------------------------------");
-    Debug.Log( "Playing " + visibleVideos.Count() + " videos");
-    Debug.Log( "Pausing " + invisibleVids.Count() + " videos");
+    // Debug.Log( "------------------------------------------");
+    // Debug.Log( "Playing " + visibleVideos.Count() + " videos");
+    // Debug.Log( "Pausing " + invisibleVids.Count() + " videos");
 
     foreach (string videoName in visibleVideos)
     {

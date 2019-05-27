@@ -10,9 +10,12 @@ public class CameraController : MonoBehaviour
     public Transform serialContainer;
     private SerialController serialController;
     private Transform serialIndicator;
-    public Transform camera;
+    public float serialReciever;
 
-    public float smoothSpeed = 10f;
+    public Transform camera;
+    public float cameraSpeed = 2f;
+
+    public float smoothSpeed = 2f;
     public Vector3 cameraOffset;
 
     List<string> visibleVideos = new List<string>();
@@ -55,7 +58,10 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+
         Vector3 desiredPosition = serialIndicator.position + cameraOffset;
+
+        // Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed / Time.deltaTime );
         Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime );
         // Smoothly move camera to serialIndicator's position
         camera.transform.position = smoothedPosition;
