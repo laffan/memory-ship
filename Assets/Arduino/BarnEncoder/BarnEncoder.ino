@@ -29,8 +29,9 @@ int r;
 int g;
 int b;
 
+int direction = 0;
 int changeSpeed = 1;
-
+String sendString = "";
 
 void setup() {
   
@@ -50,9 +51,26 @@ void loop() {
   long newPosition = myEnc.read();
 
   if (newPosition != oldPosition) {
+    
+    if (newPosition > oldPosition) {
+      direction = 1;
+    } else {
+      direction = -1;
+    }
+
     oldPosition = newPosition;
-    Serial.println(newPosition);
+
+    String newPositionString = String(newPosition);
+    String directionString = String(direction);
+
+    sendString = "@dir=" + directionString + ",val=" + newPositionString + "@";
+   
+    Serial.println(sendString);
+    
     updateColor( );
+
+  } else {
+    direction = 0;
   }
 
   /* Will eventually move this inside the above if 

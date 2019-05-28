@@ -9,21 +9,22 @@ String inString = "";
 /* RGB Loop */
 int cycle = 6;
 int brightness = 0;
-int maxBrightness = 130;
+int maxBrightness = 255;
+
 int r;
 int g;
 int b;
 
-int changeSpeed = 1;
-long encoderVal = 0;
+int changeSpeed = 2;
+String inData;
 
 
 void setup()
 {
 
   r = maxBrightness;
-  g = maxBrightness;
-  b = 0;
+  g = 0;
+  b = maxBrightness;
 
   Serial.begin(9600); // Initialize serial port to send and receive at 9600 baud
   FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
@@ -33,30 +34,28 @@ void setup()
 void loop()
 {
 
-  // Read serial input:
   while (Serial.available() > 0)
-  {
-    int inChar = Serial.read();
-    if (isDigit(inChar))
     {
-      // convert the incoming byte to a char and add it to the string:
-      inString += (char)inChar;
-    }
-    // if you get a newline, print the string, then the string's value:
-    if (inChar == '\n')
-    {
-      encoderVal = inString.toInt() ;
-      // clear the string for new input:
-      inString = "";
-      updateColor( );
-    }
-  
-    
-  } /* While serial available */
+        char recieved = Serial.read();
+        inData += recieved; 
 
+        // Process message when new line character is recieved
+        if (recieved == '\n')
+        {
+            Serial.print("Arduino Received: ");
+            Serial.print(inData);
+
+            int direction = inData.toInt();
+            updateColor( );
+            
+            inData = ""; // Clear recieved buffer
+        }
+    }
 }
 
-void updateColor(  ) {
+void updateColor(   ) {
+
+//  changeSpeed = changeSpeed * direction;
 
   if ( brightness >= maxBrightness ) {
     brightness = 1;
@@ -68,26 +67,38 @@ void updateColor(  ) {
     }
     
   } else {
-    brightness++;
+    brightness = brightness + changeSpeed;
   }
 
-  if ( cycle == 1) {
+  if ( cycle == 1) { /* r --> rb */
+    r = maxBrightness;
+    g = 0;
     b = b + changeSpeed;
   }
   else if ( cycle == 2) { /* rb --> b */
     r = r - changeSpeed;
+    g = 0;
+    b = maxBrightness;
   }
   else if ( cycle == 3) { /* b --> bg */
+    r = 0;
     g = g + changeSpeed;
+    b = maxBrightness;
   }
   else if ( cycle == 4) { /* bg --> g */
+    r = 0;
+    g = maxBrightness;
     b = b - changeSpeed;
   }
   else if ( cycle == 5) { /* g --> rg */
     r = r + changeSpeed;
+    g = maxBrightness;
+    b = 0;
   }
-  else if ( cycle == 6) { /* g --> rg */
+  else if ( cycle == 6) { /* rg --> r */
+    r = maxBrightness;
     g = g - changeSpeed;
+    b = 0;
   }
   else {
     Serial.print("==================== ");

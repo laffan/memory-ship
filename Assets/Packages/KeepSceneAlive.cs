@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if (UNITY_EDITOR) 
+
+using UnityEngine;
 using System.Collections;
 
 public class KeepSceneAlive : MonoBehaviour
@@ -13,3 +15,5 @@ public class KeepSceneAlive : MonoBehaviour
     }
   }
 }
+
+#endif

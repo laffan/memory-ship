@@ -460,6 +460,8 @@ GameObject:
   - component: {fileID: 1316072876}
   - component: {fileID: 1316072877}
   - component: {fileID: 1316072878}
+  - component: {fileID: 1316072879}
+  - component: {fileID: 1316072880}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -515,9 +517,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serialContainer: {fileID: 721227141}
   camera: {fileID: 1025023546}
-  cameraSpeed: 2
-  smoothSpeed: 0.125
+  smoothSpeed: 5
   cameraOffset: {x: 0, y: 1, z: -12}
+--- !u!114 &1316072879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316072875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e897de29c30c9ea4b8ec52c74328904a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1316072880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316072875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf49c8e6251a9443f8915b0bce85b880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeepSceneViewActive: 0
 --- !u!1 &1427799649
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +553,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1427799650}
-  - component: {fileID: 1427799651}
   m_Layer: 0
   m_Name: SerialController
   m_TagString: Untagged
@@ -549,23 +574,6 @@ Transform:
   m_Father: {fileID: 721227141}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1427799651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427799649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  portName: /dev/cu.usbmodem14201
-  baudRate: 9600
-  messageListener: {fileID: 1316072875}
-  reconnectionDelay: 1000
-  maxUnreadMessages: 1
 --- !u!1 &1492320094
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2015500904
 Transform:
   m_ObjectHideFlags: 0

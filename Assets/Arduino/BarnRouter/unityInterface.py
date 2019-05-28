@@ -14,7 +14,7 @@ while True:
     #  Try reducing sleep time to 0.01 to see how blazingly fast it communicates
     #  In the real world usage, you just need to replace time.sleep() with
     #  whatever work you want python to do, maybe a machine learning task?
-    time.sleep(.5)
+    time.sleep(.05)
 
     f = open("encoderVal.txt", "r")
     encoderVal = f.read()

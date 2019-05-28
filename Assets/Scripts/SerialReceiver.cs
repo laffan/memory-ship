@@ -7,7 +7,8 @@ public class SerialReceiver : RunAbleThread
 {
   protected override void Run()
   {
-    ForceDotNet.Force(); // this line is needed to prevent unity freeze after one use, not sure why yet
+
+    ForceDotNet.Force(); // this line is needed to prevent unity freeze
     using (RequestSocket client = new RequestSocket())
     {
       client.Connect("tcp://localhost:5555");
@@ -25,11 +26,14 @@ public class SerialReceiver : RunAbleThread
           if (gotMessage) break;
         }
 
-        if (gotMessage) Debug.Log("Received " + message);
+        if (gotMessage) {
+          CameraController.serialReciever = message;
+          Debug.Log(message);
+        }
 
       }
     }
 
-    NetMQConfig.Cleanup(); // this line is needed to prevent unity freeze after one use, not sure why yet
+    NetMQConfig.Cleanup(); // this line is needed to prevent unity freeze 
   }
 }
