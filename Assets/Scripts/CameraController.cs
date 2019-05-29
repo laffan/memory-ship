@@ -16,9 +16,7 @@ public class CameraController : MonoBehaviour
     public Transform camera;
     public float smoothSpeed = 2f;
     public Vector3 cameraOffset;
-
     List<string> visibleVideos = new List<string>();
-
     private MediaManager mediaManager;
     Camera cam;
 
@@ -26,30 +24,31 @@ public class CameraController : MonoBehaviour
     // Initialization
     void Start()
     {
+      serialController = serialContainer.Find("SerialController").GetComponent<SerialController>();
+      serialIndicator = serialContainer.Find("Indicator");
 
-    serialIndicator = serialContainer.Find("Indicator");
-    camera.position = serialIndicator.position + cameraOffset;
-        cam = camera.GetComponent<Camera>();
-
-        mediaManager = transform.GetComponent<MediaManager>();
+      camera.position = serialIndicator.position + cameraOffset;
+      cam = camera.GetComponent<Camera>();
+      mediaManager = transform.GetComponent<MediaManager>();
 	}
 
     void Update(){
 
-        checkVisibleMedia(  );
+      checkVisibleMedia(  );
 
     }
 
     // Executed each frame
     void FixedUpdate()
     {
-
-        int serialRecieverInt = int.Parse(serialReciever);
-        
-        // Move indicator GO with encoder
-        serialIndicator.transform.position =  new Vector3( serialRecieverInt , 0 , 0);
-
-        // Debug.Log( encoderInt );
+      // Get encoder val from serial interface
+      string encoderVal = returnSerialMessage();
+      // Set reciever val to it can be sent in SerialReciever.cs
+      serialReciever = encoderVal;
+      // Convert val to int
+      int encoderInt = Int32.Parse(encoderVal);
+      // Update indicator position
+      serialIndicator.transform.position = new Vector3(encoderInt, 0, 0);
 
     }
 
@@ -106,5 +105,25 @@ public class CameraController : MonoBehaviour
     }
 
  
+    private string returnSerialMessage()
+    {
+
+        string message = serialController.ReadSerialMessage();
+
+        if (message == null)
+            return "null";
+        else 
+            return message;
+
+        // Check if the message is plain data or a connect/disconnect event.
+        if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
+            Debug.Log("Connection established");            
+        else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
+            Debug.Log("Connection attempt failed or disconnection detected");
+        else
+            Debug.Log("Message arrived: " + message);
+
+
+    }
 
 }

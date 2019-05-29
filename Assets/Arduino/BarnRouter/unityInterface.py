@@ -8,17 +8,17 @@ socket.bind("tcp://*:5555")
 while True:
     #  Wait for next request from client
     message = socket.recv()
-    print("Received request: %s" % message)
+    if (message != "null"):
+      print(message)
+      with open('encoderVal.txt', 'r+') as f:
+        # Wipe the file so it's only the most recent value
+        f.truncate()
+        f.write(message)
+      
+    time.sleep(.03)
 
-    #  Do some 'work'.
-    #  Try reducing sleep time to 0.01 to see how blazingly fast it communicates
-    #  In the real world usage, you just need to replace time.sleep() with
-    #  whatever work you want python to do, maybe a machine learning task?
-    time.sleep(.05)
+    # Response (Required)
+    socket.send( "Received" )
 
-    f = open("encoderVal.txt", "r")
-    encoderVal = f.read()
-    #  Send reply back to client
-    #  In the real world usage, after you finish your work, send your output here
-    socket.send( encoderVal )
-    print("Sending: %s" % encoderVal)
+f.truncate()
+f.close()

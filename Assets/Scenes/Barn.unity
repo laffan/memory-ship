@@ -517,7 +517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serialContainer: {fileID: 721227141}
   camera: {fileID: 1025023546}
-  smoothSpeed: 5
+  smoothSpeed: 1
   cameraOffset: {x: 0, y: 1, z: -12}
 --- !u!114 &1316072879
 MonoBehaviour:
@@ -553,6 +553,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1427799650}
+  - component: {fileID: 1427799651}
   m_Layer: 0
   m_Name: SerialController
   m_TagString: Untagged
@@ -574,6 +575,23 @@ Transform:
   m_Father: {fileID: 721227141}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1427799651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427799649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portName: /dev/cu.usbmodem141101
+  baudRate: 9600
+  messageListener: {fileID: 0}
+  reconnectionDelay: 1000
+  maxUnreadMessages: 1
 --- !u!1 &1492320094
 GameObject:
   m_ObjectHideFlags: 0

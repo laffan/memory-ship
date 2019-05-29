@@ -2,37 +2,31 @@
 
 Repo for David & Ellen's Wedding barn.
 
-### Next
 
-1. Trigger video on raycast hit (or enter frame?)
-2. Masking video edges / animating mask.
-3. (Possibly) linking rotary encoder movement of prefabs (allow for photos to
-    move @ different speed)
+## Installation
 
-### Ideas
+### Unity
+Unity _should_ automatically install everything you need when you open up the project for the first time.
 
-- Animate saturation on frozen video frames (bloom in to color somehow)
-- Shader that breaks apart the farther you are from the middle of the screen
-- 
+### Python
+The only nonstandard packages being used (I think) are zmq and pySerial. PySerial might need you to _uninstall_ the existing serial interface (`pip uninstall serial`) before installation (`pip install pyserial`)
 
+### Arduino
+The only special treatment here is for getting the TrinketM0s up and running which [Adafruit has a whole guide on](https://learn.adafruit.com/adafruit-trinket-m0-circuitpython-arduino/arduino-ide-setup). 
 
-### Useful Links
+### Usage
 
-- Targeting with Raycast
-	https://www.youtube.com/watch?time_continue=18&v=_yf5vzZ2sYE
+1. cd in to BarnRouter and start `python serialInterface.py` in one session and `python unityInterface.py` in another.
 
-- Reading/Writing to JSON
-    - https://www.raywenderlich.com/418-how-to-save-and-load-a-game-in-unity
+2. Run the game.
 
-- Video in Unity
-	- [How to Play a Video in Unity 2017 - YouTube](https://www.youtube.com/watch?v=V8rwCWiRLWI)
-    - [Dynamicaly load a video on a GameObject - Unity Answers](https://answers.unity.com/questions/1432801/dynamicaly-load-a-video-on-a-gameobject.html)
+## Libraries
 
-- White to transparent
-	- [python - Using PIL to make all white pixels transparent? - Stack Overflow](https://stackoverflow.com/questions/765736/using-pil-to-make-all-white-pixels-transparent)
+Uno (Rotary Encoder) → Unity
+https://github.com/dwilches/Ardity
 
-- Loading assets in to a game at runtime
-	- [Using Streaming Assets in Unity | raywenderlich.com](https://www.raywenderlich.com/479-using-streaming-assets-in-unity)
-	- [Load Image at Runtime in Unity - Gyanendu Shekhar's Blog](http://gyanendushekhar.com/2017/07/08/load-image-runtime-unity/)
-	- [Unity - Scripting API: AssetDatabase.FindAssets](https://docs.unity3d.com/ScriptReference/AssetDatabase.FindAssets.html)
-	- [Unity - Manual: Loading Resources at Runtime](https://docs.unity3d.com/Manual/LoadingResourcesatRuntime.html)
+Unity → Python
+https://github.com/off99555/Unity3D-Python-Communication
+
+Python → Trinkets
+https://github.com/pyserial/pyserial

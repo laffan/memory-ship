@@ -13,10 +13,12 @@ public class SerialReceiver : RunAbleThread
     {
       client.Connect("tcp://localhost:5555");
 
-      for (int i = 0; i < 9999 && Running; i++)
+      for (int i = 0; i < 1000 && Running; i++)
       {
-        Debug.Log("Sending Hello");
-        client.SendFrame("Hello");
+
+        Debug.Log( CameraController.serialReciever );
+
+        client.SendFrame( CameraController.serialReciever );
 
         string message = null;
         bool gotMessage = false;
@@ -27,8 +29,11 @@ public class SerialReceiver : RunAbleThread
         }
 
         if (gotMessage) {
-          CameraController.serialReciever = message;
           Debug.Log(message);
+        }
+
+        if ( i > 900 ) {
+          i = 0; // Reset loop
         }
 
       }

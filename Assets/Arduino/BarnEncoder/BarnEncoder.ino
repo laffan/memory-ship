@@ -63,9 +63,9 @@ void loop() {
     String newPositionString = String(newPosition);
     String directionString = String(direction);
 
-    sendString = "@dir=" + directionString + ",val=" + newPositionString + "@";
+//    sendString = "@dir=" + directionString + ",val=" + newPositionString + "@";
    
-    Serial.println(sendString);
+    Serial.println(newPosition);
     
     updateColor( );
 
