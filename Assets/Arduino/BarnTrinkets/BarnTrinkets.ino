@@ -4,19 +4,15 @@
 CRGB leds[NUM_LEDS];
 #define LED_PIN  2
 
-String inString = "";
+String inData = "";
 
 /* RGB Loop */
-int cycle = 6;
-int brightness = 0;
+int serialInt = 0;
+int speed = 4; 
 int maxBrightness = 255;
-
-int r;
-int g;
-int b;
-
-int changeSpeed = 2;
-String inData;
+int fullSpectrum = maxBrightness * 6;
+int colorLoc = 0;
+int r, g, b;
 
 
 void setup()
@@ -45,59 +41,47 @@ void loop()
             Serial.print("Arduino Received: ");
             Serial.print(inData);
 
-            int direction = inData.toInt();
-            updateColor( );
+            int inDataInt = inData.toInt();
+            updateColor( inDataInt );
             
             inData = ""; // Clear recieved buffer
         }
     }
 }
 
-void updateColor(   ) {
+void updateColor( int colorLoc  ) {
 
-//  changeSpeed = changeSpeed * direction;
+    int cycle = (colorLoc <= maxBrightness) ? 1 : floor( colorLoc / maxBrightness ) + 1 ;
+    int position = (colorLoc <= maxBrightness) ? colorLoc : colorLoc % maxBrightness;
 
-  if ( brightness >= maxBrightness ) {
-    brightness = 1;
-    
-    if ( cycle < 6 ) {
-      cycle++;
-    } else {
-      cycle = 1;
-    }
-    
-  } else {
-    brightness = brightness + changeSpeed;
-  }
-
-  if ( cycle == 1) { /* r --> rb */
+  if (cycle == 1) { /* r --> rb */
     r = maxBrightness;
     g = 0;
-    b = b + changeSpeed;
+    b = position;
   }
-  else if ( cycle == 2) { /* rb --> b */
-    r = r - changeSpeed;
+  else if (cycle == 2) { /* rb --> b */
+    r = maxBrightness - position;
     g = 0;
     b = maxBrightness;
   }
-  else if ( cycle == 3) { /* b --> bg */
+  else if (cycle == 3) { /* b --> bg */
     r = 0;
-    g = g + changeSpeed;
+    g = position;
     b = maxBrightness;
   }
-  else if ( cycle == 4) { /* bg --> g */
+  else if (cycle == 4) { /* bg --> g */
     r = 0;
     g = maxBrightness;
-    b = b - changeSpeed;
+    b = maxBrightness - position;
   }
-  else if ( cycle == 5) { /* g --> rg */
-    r = r + changeSpeed;
+  else if (cycle == 5) { /* g --> rg */
+    r = position;
     g = maxBrightness;
     b = 0;
   }
-  else if ( cycle == 6) { /* rg --> r */
+  else if (cycle == 6) { /* rg --> r */
     r = maxBrightness;
-    g = g - changeSpeed;
+    g = maxBrightness- position;
     b = 0;
   }
   else {

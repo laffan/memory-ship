@@ -2,7 +2,6 @@
 
 Repo for David & Ellen's Wedding barn.
 
-
 ## Installation
 
 ### Unity
@@ -12,7 +11,7 @@ Unity _should_ automatically install everything you need when you open up the pr
 The only nonstandard packages being used (I think) are zmq and pySerial. PySerial might need you to _uninstall_ the existing serial interface (`pip uninstall serial`) before installation (`pip install pyserial`)
 
 ### Arduino
-The only special treatment here is for getting the TrinketM0s up and running which [Adafruit has a whole guide on](https://learn.adafruit.com/adafruit-trinket-m0-circuitpython-arduino/arduino-ide-setup). 
+The only special treatment here is teaching your Arduino IDE to talk to TrinketM0s (if you want to make a change) which [Adafruit has a whole guide on](https://learn.adafruit.com/adafruit-trinket-m0-circuitpython-arduino/arduino-ide-setup). 
 
 ### Usage
 
