@@ -16,7 +16,7 @@ public class SerialReceiver : RunAbleThread
       for (int i = 0; i < 1000 && Running; i++)
       {
 
-        Debug.Log( CameraController.serialReciever );
+        // Debug.Log( CameraController.serialReciever );
 
         client.SendFrame( CameraController.serialReciever );
 

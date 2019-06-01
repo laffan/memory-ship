@@ -25,6 +25,7 @@ public class MediaManager : MonoBehaviour
   private Vector3 currentPosition = new Vector3(1, 1, 1);
   
   public int mediaOffset;
+  public float mediaRadius = 200;
   public Vector3 mediaSpacing = new Vector3( 20, 0 , 0);
 
 
@@ -49,8 +50,12 @@ public class MediaManager : MonoBehaviour
 
     for (int i = 0; i < videoOrder.Count; i++)
     {
-      // Debug.Log( i + " - " + videoOrder[i] + " - " +  mediaFiles[videoOrder[i]].file.Name );
-      StartCoroutine( "LoadVideo", mediaFiles[videoOrder[i]] );
+      // Package up parameters
+      MediaFile media = mediaFiles[videoOrder[i]];
+      int current = i;
+      object[] parms = new object[2] { media, current };
+      // Start coroutine with packaged parameters
+      StartCoroutine( "LoadVideo", parms );
     }
   }
 
@@ -84,17 +89,50 @@ public class MediaManager : MonoBehaviour
     Debug.Log("Data Loaded");
   }
  
-  void LoadVideo(MediaFile media)
+  void LoadVideo( object[] parms  )
   {
+    // Unpackage parameters
+    MediaFile media = (MediaFile)parms[0];
+    int current = (int)parms[1];
+    int count = videoOrder.Count;
+
     // Load to WWW
     string wwwFilePath = "file://" + media.file.FullName.ToString();
-    // Instantiate prefab container
-    Transform video = (Transform) Instantiate(videoPrefab, currentPosition, transform.rotation);
+    // Instantiate prefab container around circle
+    // Math from https://docs.unity3d.com/Manual/InstantiatingPrefabs.html
+
+    float angle = current * (Mathf.PI * 2) / count;
+    float sideLength = 17;
+    float radius = sideLength / ( 2 * Mathf.Tan( 180 / count));
+
+    // Debug.Log( radius );
+
+    float x = Mathf.Cos(angle) *  mediaRadius;
+    float z = Mathf.Sin(angle) *  mediaRadius;
+    Vector3 pos = transform.position + new Vector3(x, 0, z);
+    float angleDegrees = -angle * Mathf.Rad2Deg + 90;
+    Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
+
+
+
+
+
+    Transform video = (Transform) Instantiate(videoPrefab, pos, rot);
+
+
+
     // Name the container
     video.transform.name = media.file.Name;
     // Put inside mediaContainer game object.
     video.transform.parent = mediaContainer.transform;
+
+
+
+    // YOU WILL NEED TO DELETE THIS 
     currentPosition = currentPosition + mediaSpacing;
+
+
+
     // Locate correct GameObjects w/in the prefab
     Transform label = video.Find("Label");
     Transform surface = video.Find("Surface");
