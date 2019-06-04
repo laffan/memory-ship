@@ -99,20 +99,21 @@
 
   var i;
 
-  for (i = 0; i < fullSpectrum; i = i + speed ) { 
-    serialInt = i;
+  for (i = -3000; i < 1000; i = i + speed ) { 
+    // serialInt = i;
+    serialInt = Math.abs(i);
 
     $("#lights")
       .clone()
-      .attr("id", `lights${i}`)
+      .attr("id", `lights${serialInt}`)
       .appendTo("body");
 
     for (var j = 0; j <= 6; j++) {
       var serialAdjusted = serialInt + (maxBrightness * j);
       var colorLoc = (serialAdjusted >= fullSpectrum) ? serialAdjusted % fullSpectrum : serialAdjusted;
 
-      console.log( j )
-      updateColor(colorLoc, `#lights${i} #light${j+1}`);
+      console.log( serialInt )
+      updateColor(colorLoc, `#lights${serialInt} #light${j+1}`);
     }
   }
 

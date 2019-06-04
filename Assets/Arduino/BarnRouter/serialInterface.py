@@ -29,25 +29,30 @@ while True:
     
     prevEncoderVal = encoderVal
     
-    print(encoderVal)
 
     # Convert encoderValue (back) to int
-    encoderValInt = int(encoderVal)
+    encoderValInt = abs(int(encoderVal))
   i = 0
   for i in range (len(connections)):
 
     # Place starting points evently across spectrum
     # encoderValAdjusted = encoderValInt + (maxBrightness * (i+1))
-
     # Spread hues across colorDistance 
     encoderValAdjusted = encoderValInt + (colorDistance * (i+1))
 
     # Normalized new starting points on spectrum
     colorLoc = encoderValAdjusted % fullSpectrum if (encoderValAdjusted >= fullSpectrum) else encoderValAdjusted
 
-    # Update lights
-    connections[i].write("%s\n" % (colorLoc))
+    print("encoderval: %s" % (encoderValInt))
 
+
+    # Update lights
+    try:
+      connections[i].write("%s\n" % (colorLoc))
+    except:
+      print("Serial Exception")
+      pass
+    
 # Close serial connections on interrupt
 
 for connection in connections:

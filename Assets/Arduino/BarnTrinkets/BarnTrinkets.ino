@@ -10,7 +10,6 @@ String inData = "";
 int serialInt = 0;
 int speed = 4; 
 int maxBrightness = 255;
-int fullSpectrum = maxBrightness * 6;
 int colorLoc = 0;
 int r, g, b;
 

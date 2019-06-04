@@ -103,46 +103,24 @@ public class MediaManager : MonoBehaviour
 
     // Load to WWW
     string wwwFilePath = "file://" + media.file.FullName.ToString();
+    
     // Instantiate prefab container around circle
     // Math from https://docs.unity3d.com/Manual/InstantiatingPrefabs.html
 
     float angle = current * (Mathf.PI * 2) / count;
     float sideLength = 17;
-
-
-    // float radius = sideLength / ( 2 * Mathf.Tan( 180 / count));
-
-    // Debug.Log( radius );
-
-
-
     float x = Mathf.Cos(angle) *  mediaRadius;
     float z = Mathf.Sin(angle) *  mediaRadius;
     Vector3 pos = transform.position + new Vector3(x, 0, z);
     float angleDegrees = -angle * Mathf.Rad2Deg + 90;
-
-
     Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
 
-
-
-
-
     Transform video = (Transform) Instantiate(videoPrefab, pos, rot);
-
-
 
     // Name the container
     video.transform.name = media.file.Name;
     // Put inside mediaContainer game object.
     video.transform.parent = mediaContainer.transform;
-
-
-
-    // YOU WILL NEED TO DELETE THIS 
-    currentPosition = currentPosition + mediaSpacing;
-
-
 
     // Locate correct GameObjects w/in the prefab
     Transform label = video.Find("Label");
@@ -154,7 +132,12 @@ public class MediaManager : MonoBehaviour
     // Attach Video to surface and pause it
     VideoClip clip = Resources.Load<VideoClip>(wwwFilePath) as VideoClip;
     surface.GetComponent<VideoPlayer>().url = wwwFilePath;
-    surface.GetComponent<VideoPlayer>().Pause();
+    //Assign the Audio from Video to AudioSource to be played
+    surface.GetComponent<VideoPlayer>().EnableAudioTrack(0, true);
+    // Helps with syncing ... apparently.
+    surface.GetComponent<VideoPlayer>().controlledAudioTrackCount = 1;
+    // Using stop instead of pause for lag issues
+    surface.GetComponent<VideoPlayer>().Stop();
   }
 
   public void PlayVideo( List<string> visibleVideos ){
@@ -171,6 +154,9 @@ public class MediaManager : MonoBehaviour
       Transform surface = media.Find("Surface");
 
       if ( !surface.GetComponent<VideoPlayer>().isPlaying) {
+
+  
+
         surface.GetComponent<VideoPlayer>().Play();
       }
     }
@@ -178,7 +164,7 @@ public class MediaManager : MonoBehaviour
     {
       Transform media = mediaContainer.transform.Find( videoName);
       Transform surface = media.Find("Surface");
-        surface.GetComponent<VideoPlayer>().Pause();
+        surface.GetComponent<VideoPlayer>().Stop();
     }
   }
 }
