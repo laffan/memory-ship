@@ -5,6 +5,7 @@ import os
 connections = []
 maxBrightness = 255
 fullSpectrum = maxBrightness * 6
+colorDistance = 90
 prevEncoderVal = ""
 
 # Connect to each Arduino individually
@@ -34,10 +35,16 @@ while True:
     encoderValInt = int(encoderVal)
   i = 0
   for i in range (len(connections)):
+
     # Place starting points evently across spectrum
-    encoderValAdjusted = encoderValInt + (maxBrightness * (i+1))
+    # encoderValAdjusted = encoderValInt + (maxBrightness * (i+1))
+
+    # Spread hues across colorDistance 
+    encoderValAdjusted = encoderValInt + (colorDistance * (i+1))
+
     # Normalized new starting points on spectrum
     colorLoc = encoderValAdjusted % fullSpectrum if (encoderValAdjusted >= fullSpectrum) else encoderValAdjusted
+
     # Update lights
     connections[i].write("%s\n" % (colorLoc))
 

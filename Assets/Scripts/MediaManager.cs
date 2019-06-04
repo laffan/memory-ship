@@ -20,12 +20,14 @@ public class MediaManager : MonoBehaviour
 
   public Transform imageJPGPrefab;
   public Transform videoPrefab;
+  public static float videoCount;
 
+  
   public Transform mediaContainer;
   private Vector3 currentPosition = new Vector3(1, 1, 1);
   
   public int mediaOffset;
-  public float mediaRadius = 200;
+  public static float mediaRadius = 400;
   public Vector3 mediaSpacing = new Vector3( 20, 0 , 0);
 
 
@@ -37,6 +39,9 @@ public class MediaManager : MonoBehaviour
     LoadData();
     // Create a list of ints that can be shuffled to determine video order.
     videoOrder = Enumerable.Range(0, mediaFiles.Count - 1 ).ToList();
+
+    videoCount = videoOrder.Count;
+
     KickOff();
   }
 
@@ -103,14 +108,20 @@ public class MediaManager : MonoBehaviour
 
     float angle = current * (Mathf.PI * 2) / count;
     float sideLength = 17;
-    float radius = sideLength / ( 2 * Mathf.Tan( 180 / count));
+
+
+    // float radius = sideLength / ( 2 * Mathf.Tan( 180 / count));
 
     // Debug.Log( radius );
+
+
 
     float x = Mathf.Cos(angle) *  mediaRadius;
     float z = Mathf.Sin(angle) *  mediaRadius;
     Vector3 pos = transform.position + new Vector3(x, 0, z);
     float angleDegrees = -angle * Mathf.Rad2Deg + 90;
+
+
     Quaternion rot = Quaternion.Euler(0, angleDegrees, 0);
 
 

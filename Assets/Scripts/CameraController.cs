@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Executed each frame
-    void FixedUpdate()
+    void LateUpdate()
     {
       // Get encoder val from serial interface
       string encoderVal = returnSerialMessage();
@@ -47,23 +47,44 @@ public class CameraController : MonoBehaviour
       serialReciever = encoderVal;
       // Convert val to int
       int encoderInt = Int32.Parse(encoderVal);
-      // Update indicator position
-      serialIndicator.transform.position = new Vector3(encoderInt, 0, 0);
+      float cameraPathRadius = MediaManager.mediaRadius - 14;
+      float lookAtRadius = MediaManager.mediaRadius - 6;
+
+      // Changing 80 for both remainder and theta will change change # of clicks for single video.
+      int remainder = encoderInt % (80 * (int)MediaManager.videoCount);
+      float theta = ((float)remainder / (80 * MediaManager.videoCount)) * (2 * (float)Math.PI );
+
+      // Debug.Log("videoCount: " + MediaManager.videoCount + " || encoderInt: " + encoderInt + " || cameraPathRadius: " + cameraPathRadius + " || remainder: " + remainder + " || theta: " + theta);
+      // Debug.Log("Sin(theta): " + (float)Math.Sin(theta) + " || Cos(theta): " + (float)Math.Cos(theta));
+      // Debug.Log("theta * ( 360 / (2 * (float)Math.PI )): " + theta * (360 / (2 * (float)Math.PI)) );
+      // Debug.Log("---------------------------------------");
+
+      Vector3 newCameraPosition = new Vector3(((float)Math.Sin(theta) * cameraPathRadius), 0, ((float)Math.Cos(theta) * cameraPathRadius));
+      Vector3 newCameraView = new Vector3(((float)Math.Sin(theta) * lookAtRadius), 0, ((float)Math.Cos(theta) * lookAtRadius));
+
+      camera.transform.position = newCameraPosition;
+      camera.transform.LookAt( newCameraView );
+
 
     }
 
-    void LateUpdate()
-    {
 
-        Vector3 desiredPosition = serialIndicator.position + cameraOffset;
+    // void LateUpdate()
+    // {
 
-        // Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed / Time.deltaTime );
-        Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime );
-        // Smoothly move camera to serialIndicator's position
-        camera.transform.position = smoothedPosition;
+    //     // Vector3 desiredPosition = serialIndicator.position + cameraOffset;
+
+    //     // // Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed / Time.deltaTime );
+        
+    //     // Vector3 smoothedPosition = Vector3.Lerp( camera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime );
+        
+    //     // // Smoothly move camera to serialIndicator's position
+
+    //     // camera.transform.position = smoothedPosition;
         
         
-    }
+        
+    // }
 
     private void checkVisibleMedia(  ) {
 
