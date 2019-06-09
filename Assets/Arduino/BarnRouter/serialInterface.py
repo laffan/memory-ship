@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import serial
 from time import sleep
 import os
@@ -28,8 +30,6 @@ while True:
   if ( encoderVal != prevEncoderVal and encoderVal != ""):
     
     prevEncoderVal = encoderVal
-    
-
     # Convert encoderValue (back) to int
     encoderValInt = abs(int(encoderVal))
   i = 0
@@ -50,8 +50,10 @@ while True:
     try:
       connections[i].write("%s\n" % (colorLoc))
     except:
+    # except ZeroDivisionError as e:
+
       print("Serial Exception")
-      pass
+      # pass
     
 # Close serial connections on interrupt
 
