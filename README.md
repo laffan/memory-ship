@@ -1,6 +1,6 @@
-# Barn
+# Memory Ship
 
-Repo for David & Ellen's Wedding barn.
+The Memory Ship (2018) was an interactive digital installation constructed for a friend's wedding. With whimsical, abstract themes, the installation invited the viewer to navigate a three dimensional dream environment using a ship captain's wheel. Inside the environment were a series of videos from couple's childhood, while outside it were LED lanterns that reproduced hues from inside the game world. The memory ship explored spatial metaphor, blended reality and how alternative control through a memory space changes our relationship to it.
 
 ## Installation
 
