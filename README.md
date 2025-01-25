@@ -1,4 +1,4 @@
-# Memory Ship
+# The Memory Ship
 
 ![README_graphic](https://github.com/user-attachments/assets/cf86a659-f53d-4081-9a2a-58c4d4f2e53d)
 
